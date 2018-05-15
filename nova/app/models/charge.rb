@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class Charge < ApplicationRecord
-  MIN_CHARGE_AMOUNT = 100
-  MAX_CHARGE_AMOUNT = 100_000
-
   belongs_to :user
 
   validates :amount, numericality: { only_integer: true }, presence: true
