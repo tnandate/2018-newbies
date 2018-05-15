@@ -175,9 +175,9 @@
         .columns
           .column.is-12
             .field.has-addons
-              .control
+              .control.is-expanded
                 input.input(type='number' v-model="newRemitRequest.amount" placeholder="Amount")
-              .label 　00円　
+              .label 00円　
               .control
                 button.button.is-primary(@click="sendRemitRequest($event)") Send
     button.modal-close.is-large(@click.prevent= "isActiveNewRemitForm = false")
