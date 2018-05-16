@@ -18,20 +18,10 @@ class Charge < ApplicationRecord
       currency: 'jpy',
       customer: user.stripe_id
     )
-  rescue Stripe::CardError => e
-    throw :abort
-  rescue Stripe::RateLimitError => e
-    throw :abort
-  rescue Stripe::InvalidRequestError => e
-    throw :abort
-  rescue Stripe::AuthenticationError => e
-    throw :abort
-  rescue Stripe::APIConnectionError => e
-    throw :abort
   rescue Stripe::StripeError => e
-    Rails.logger.error(e.code)
-    Rails.logger.error(e.http_status)
-    Rails.logger.error(e.json_body)
-    throw :abort
+    Rails.logger.error("code: " + e.code.to_s)
+    Rails.logger.error("http_status: " + e.http_status)
+    Rails.logger.error("json: " + e.json_body)
+    raise ActiveRecord::Rollback
   end
 end
