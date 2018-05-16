@@ -8,7 +8,7 @@ class Charge < ApplicationRecord
 
   validates :amount, numericality: { greater_than_or_equal_to: MIN_CHARGE_AMOUNT, less_than_or_equal_to: MAX_CHARGE_AMOUNT, only_integer: true }, presence: true
 
-  after_create :create_stripe_charge
+  before_create :create_stripe_charge
 
   protected
 
@@ -22,6 +22,6 @@ class Charge < ApplicationRecord
     Rails.logger.error("code: " + e.code.to_s)
     Rails.logger.error("http_status: " + e.http_status.to_s)
     Rails.logger.error("json: " + e.json_body.to_s)
-    raise ActiveRecord::Rollback
+    throw :abort
   end
 end
