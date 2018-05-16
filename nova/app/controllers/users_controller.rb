@@ -6,15 +6,10 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(nickname: user_params[:nickname],
-                     email: user_params[:email]&.downcase,
-                     password: user_params[:password],
-                     password_confirmation: user_params[:passoword_confirmation])
-
-    # Password と Password Confirmation の同一性チェック
-    return render :new, status: :bad_request if user_params[:password] != user_params[:password_confirmation]
-
-    @user.save
+    @user = User.create(nickname: user_params[:nickname],
+                        email: user_params[:email]&.downcase,
+                        password: user_params[:password],
+                        password_confirmation: user_params[:password_confirmation])
 
     # User が save されたかチェック
     return render :new, status: :bad_request unless @user.persisted?
