@@ -50,7 +50,6 @@ class Api::RemitRequestsController < Api::ApplicationController
 
     render json: {}, status: :ok
   rescue ActiveRecord::RecordInvalid => e
-    @remit_request.outstanding!
 
     record_invalid(e)
   end
