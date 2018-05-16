@@ -125,7 +125,6 @@ document.addEventListener('DOMContentLoaded', function() {
           this.register_error_messages = "";
           for(var error of json.errors){
             this.register_error_messages += error + "\n";
-
           }
         }else{
           this.register_notification = "更新しました。"
@@ -211,9 +210,10 @@ document.addEventListener('DOMContentLoaded', function() {
         var self = this;
         api.post('/api/remit_requests/' + id + '/accept').
           then(function(json) {
-            debugger
             if(json.errors){
-                this.remitRequest_accept_notification = json.errors;
+              for(var error of json.errors){
+                self.remitRequest_accept_notification = error;
+              }
             }else{
               self.recvRemits = self.recvRemits.filter(function(r) {
                 if(r.id != id) {
