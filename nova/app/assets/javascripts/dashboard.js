@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
           this.register_notification = "更新に失敗しました。";
           this.register_error_messages = "";
           for(var error of json.errors){
-            this.register_error_messages += error + "\n";
+            this.register_error_messages += error;
           }
         }else{
           this.register_notification = "更新しました。"
