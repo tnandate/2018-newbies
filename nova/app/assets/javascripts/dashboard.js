@@ -120,9 +120,11 @@ document.addEventListener('DOMContentLoaded', function() {
     methods: {
       show_register_notification: function(json){
         if(json.errors){
-          this.register_notification = "更新に失敗しました。"
+          this.register_notification = "更新に失敗しました。";
+          this.register_error_messages = "";
           for(var error of json.errors){
-            this.register_error_messages += error;
+            this.register_error_messages += error + '\n';
+
           }
         }else{
           this.register_notification = "更新しました。"
