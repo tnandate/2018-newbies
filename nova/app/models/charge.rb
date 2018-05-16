@@ -21,7 +21,7 @@ class Charge < ApplicationRecord
   rescue Stripe::StripeError => e
     Rails.logger.error("code: " + e.code.to_s)
     Rails.logger.error("http_status: " + e.http_status.to_s)
-    Rails.logger.error("json: " + e.json_body)
+    Rails.logger.error("json: " + e.json_body.to_s)
     raise ActiveRecord::Rollback
   end
 end
