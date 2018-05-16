@@ -71,6 +71,7 @@
 
       .columns(v-if="currentRimitTab === 'request'")
         .column.is-12
+          .p= '{{ remitRequest_accept_notification}}'
           table.table.is-fullwidth
             thead
               tr
