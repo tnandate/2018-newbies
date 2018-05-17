@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_11_022733) do
+ActiveRecord::Schema.define(version: 2018_05_17_043852) do
 
   create_table "balances", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 2018_05_11_022733) do
   create_table "charges", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "amount", null: false
+    t.integer "status", default: 0, null: false
+    t.string "ch_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_charges_on_user_id"
