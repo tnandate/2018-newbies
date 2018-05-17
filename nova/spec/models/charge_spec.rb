@@ -15,9 +15,7 @@ RSpec.describe Charge, type: :model do
 
   describe 'Associations' do
     describe 'amount' do
-      it { is_expected.to validate_numericality_of(:amount).only_integer }
       it { should validate_inclusion_of(:amount).in_array([100, 500, 1000, 5000]) }
-      it { is_expected.to validate_presence_of(:amount) }
     end
   end
 end

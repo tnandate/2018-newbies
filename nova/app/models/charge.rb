@@ -3,7 +3,6 @@
 class Charge < ApplicationRecord
   belongs_to :user
 
-  validates :amount, numericality: { only_integer: true }, presence: true
   validates_inclusion_of :amount, in: [100, 500, 1000, 5000]
 
   after_create :create_stripe_charge
