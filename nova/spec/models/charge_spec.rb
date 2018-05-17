@@ -18,11 +18,12 @@ RSpec.describe Charge, type: :model do
       it 'mocks a declined card error' do
         StripeMock.prepare_card_error(:card_declined)
 
-        expect { Stripe::Charge.create(amount: 1, currency: 'usd') }.to raise_error {|e|
+        expect { Stripe::Charge.create() }.to raise_error {|e|
           expect(e).to be_a Stripe::CardError
           expect(e.http_status).to eq(402)
           expect(e.code).to eq('card_declined')
           expect(e.json_body.is_a?(Hash)).to eq true
+          expect(e.message).to eq("The card was declined")
         }
       end
     end
