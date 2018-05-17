@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
       target: "",
       register_notification: "",
       register_error_messages: "",
+      remitRequest_accept_notification: "",
       creditCard: {
         brand: "",
         last4: "",
@@ -120,7 +121,8 @@ document.addEventListener('DOMContentLoaded', function() {
     methods: {
       show_register_notification: function(json){
         if(json.errors){
-          this.register_notification = "更新に失敗しました。"
+          this.register_notification = "更新に失敗しました。";
+          this.register_error_messages = "";
           for(var error of json.errors){
             this.register_error_messages += error;
           }
@@ -207,15 +209,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var self = this;
         api.post('/api/remit_requests/' + id + '/accept').
-          then(function() {
-            self.recvRemits = self.recvRemits.filter(function(r) {
-              if(r.id != id) {
-                return true
-              } else {
-                self.amount -= r.amount;
-                return false
+          then(function(json) {
+            if(json.errors){
+              for(var error of json.errors){
+                self.remitRequest_accept_notification += error;
               }
-            });
+            } else {
+              self.recvRemits = self.recvRemits.filter(function(r) {
+                if(r.id != id) {
+                  return true
+                } else {
+                  self.amount -= r.amount;
+                  return false
+                }
+              });
+            }
           });
       },
       reject: function(id, event) {
