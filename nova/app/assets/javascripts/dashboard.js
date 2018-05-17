@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
           then(function(json) {
             if(json.errors){
               for(var error of json.errors){
-                self.remitRequest_accept_notification = error;
+                self.remitRequest_accept_notification += error;
               }
             } else {
               self.recvRemits = self.recvRemits.filter(function(r) {
