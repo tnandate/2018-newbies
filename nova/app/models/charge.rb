@@ -19,7 +19,7 @@ class Charge < ApplicationRecord
       customer: user.stripe_id
     )
   rescue Stripe::CardError, Stripe::StripeError => e
-    errors.add(:base, e.message)
+    errors.add(:base, "Stripeでエラーが発生しました。少々お待ちください。")
     throw :abort
   end
 end
