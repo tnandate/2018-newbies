@@ -82,11 +82,12 @@ RSpec.describe Api::RemitRequestsController, type: :controller do
         target.balance.update_columns(amount: 50_000)
       end
 
-      let(:remit_request) { create(:remit_request, :outstanding, user: user, target: target, amount: 1_001) }
+      let(:remit_request) { create(:remit_request, :outstanding, user: user, target: target, amount: 1001) }
 
       it do
-        expect(user.balance.reload.amount).to eq 9_999_000
-        expect(target.balance.reload.amount).to eq 50_000
+        expect { subject }.to change {
+          [user.balance.reload.amount, target.balance.reload.amount, remit_request.reload.status]
+        }.from([9_999_000, 50_000, 'outstanding']).to([9_999_000, 50_000, 'errored'])
       end
 
       it { is_expected.to have_http_status(:unprocessable_entity) }
