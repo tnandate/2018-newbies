@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
               for(var error of json.errors){
                 self.remitRequest_accept_notification = error;
               }
-            }else{
+            } else {
               self.recvRemits = self.recvRemits.filter(function(r) {
                 if(r.id != id) {
                   return true
