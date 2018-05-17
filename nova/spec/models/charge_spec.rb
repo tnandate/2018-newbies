@@ -22,6 +22,7 @@ RSpec.describe Charge, type: :model do
           expect(e).to be_a Stripe::CardError
           expect(e.http_status).to eq(402)
           expect(e.code).to eq('card_declined')
+          expect(e.json_body.is_a?(Hash)).to eq true
         }
       end
     end
