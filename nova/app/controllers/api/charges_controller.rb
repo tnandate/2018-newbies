@@ -10,6 +10,9 @@ class Api::ChargesController < Api::ApplicationController
   def create
     Balance.transaction do
       @charge = current_user.charges.create!(amount: params[:amount])
+
+      raise ActiveRecord::Rollback, 'charge に失敗しました' if @charge.failure?
+
       current_user.balance.lock!
       current_user.balance.amount += params[:amount].to_i
       # #save! 時に validation が走り、変更処理後の金額が上限金額を超えていた場合
@@ -18,7 +21,7 @@ class Api::ChargesController < Api::ApplicationController
     end
 
     render json: @charge, status: :created
-  rescue ActiveRecord::RecordInvalid => e
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::Rollback => e
     record_invalid(e)
   end
 end

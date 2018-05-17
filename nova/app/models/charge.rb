@@ -29,6 +29,7 @@ class Charge < ApplicationRecord
 
     # StripeError が発生した場合 status を failure にして db に保存する
     self.status = 'failure'
-    self.ch_id = res.id
+    # error として返って来た json に ch_id があれば Charge model の ch_id に突っ込む
+    self.ch_id = e.json_body&.[](:error)&.[](:charge)
   end
 end
