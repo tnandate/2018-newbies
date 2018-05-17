@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Charge, type: :model do
   describe 'factory validation' do
-    subject(:charge) { build(:charge) }
+    subject { build(:charge) }
 
     it { is_expected.to be_valid }
   end
@@ -15,16 +15,14 @@ RSpec.describe Charge, type: :model do
 
   context 'Error handlings' do
     context 'Card Error' do
-      it 'mocks a declined card error' do
+      let(:instance) { build(:charge) }
+      before do
         StripeMock.prepare_card_error(:card_declined)
+      end
 
-        expect { Stripe::Charge.create() }.to raise_error {|e|
-          expect(e).to be_a Stripe::CardError
-          expect(e.http_status).to eq(402)
-          expect(e.code).to eq('card_declined')
-          expect(e.json_body.is_a?(Hash)).to eq true
-          expect(e.message).to eq("The card was declined")
-        }
+      it 'mocks a declined card error' do
+        expect(instance.save).to be false
+        expect(instance.errors.messages).to be_present
       end
     end
   end
