@@ -48,6 +48,8 @@ RSpec.describe Api::RemitRequestsController, type: :controller do
 
   describe 'POST #accept' do
     subject { post :accept, params: { id: remit_request.id } }
+    let(:user) { create(:user) }
+    let(:target) { create(:user) }
 
     context 'without logged in' do
       it { is_expected.to have_http_status(:unauthorized) }
@@ -61,8 +63,6 @@ RSpec.describe Api::RemitRequestsController, type: :controller do
         target.balance.update_columns(amount: 1000)
       end
 
-      let(:user) { create(:user) }
-      let(:target) { create(:user) }
       let(:remit_request) { create(:remit_request, :outstanding, user: user, target: target, amount: 200) }
 
       it do
@@ -72,6 +72,24 @@ RSpec.describe Api::RemitRequestsController, type: :controller do
       end
 
       it { is_expected.to have_http_status(:ok) }
+    end
+
+    context 'over balance amount' do
+      before do
+        login!(user)
+
+        user.balance.update_columns(amount: 9_999_000)
+        target.balance.update_columns(amount: 50_000)
+      end
+
+      let(:remit_request) { create(:remit_request, :outstanding, user: user, target: target, amount: 1_001) }
+
+      it do
+        expect(user.balance.reload.amount).to eq 9_999_000
+        expect(target.balance.reload.amount).to eq 50_000
+      end
+
+      it { is_expected.to have_http_status(:unprocessable_entity) }
     end
   end
 
